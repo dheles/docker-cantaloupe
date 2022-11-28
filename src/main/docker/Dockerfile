@@ -111,6 +111,7 @@ RUN apt-get update -qq && \
     libtiff-tools=${libtiff.version}  \
     libtiff5=${libtiff.version}  \
     libtiff5-dev=${libtiff.version}  \
+    libopenjp2-7=${libopenjp2.version} \
     libopenjp2-tools=${libopenjp2.version} \
     libturbojpeg=${libturbojpeg.version} \
     openjdk-11-jre-headless=${openjdk.version} \
@@ -153,6 +154,9 @@ ENV LD_LIBRARY_PATH="/usr/lib/jni:${LD_LIBRARY_PATH}"
 RUN if [ -z "${kakadu.version}" ]; then \
       rm -rf /usr/local/lib/placeholder.so && \
       rm -rf /usr/local/bin/kdu_placeholder ; \
+      echo "CANTALOUPE_MANUAL_PROCESSOR_JP2=OpenJpegProcessor" >> /etc/environment && \
+      echo "CANTALOUPE_OPENJPEGPROCESSOR_PATH_TO_BINARIES=/usr/bin/opj_decompress" >> /etc/environment && \
+      echo "CANTALOUPE_PROCESSOR_SELECTION_STRATEGY=ManualSelectionStrategy" >> /etc/environment ; \
     else \
       echo "CANTALOUPE_MANUAL_PROCESSOR_JP2=KakaduNativeProcessor" >> /etc/environment && \
       echo "CANTALOUPE_PROCESSOR_SELECTION_STRATEGY=ManualSelectionStrategy" >> /etc/environment ; \
